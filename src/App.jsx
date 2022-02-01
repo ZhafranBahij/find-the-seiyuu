@@ -3,6 +3,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import Navbar from "./component/Navbar";
 import Anime from "./component/Anime";
+import Anime2 from "./component/Anime2";
 
 function App() {
   return (
