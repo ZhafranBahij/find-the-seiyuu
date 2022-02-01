@@ -79,7 +79,9 @@ const Anime = () => {
                 key={item.mal_id}
                 className="bg-sky-600 text-white py-2 px-4 my-2 rounded-xl"
               >
-                {item.name}
+                <a href={item.url} target="_blank">
+                  {item.name}
+                </a>
               </li>
             ))}
             {/* <li>{items[0]}</li> */}
