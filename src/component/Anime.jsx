@@ -9,6 +9,7 @@ const Anime = () => {
 
   const [value, setValue] = useState("");
   const [titleAnime, setTitleAnime] = useState("");
+  const [titleChara, setTitleChara] = useState("");
 
   const [idChara, setIdChara] = useState("");
   const [errorSeiyuu, setErrorSeiyuu] = useState(null);
@@ -18,35 +19,37 @@ const Anime = () => {
   // Note: the empty deps array [] means
   // this useEffect will run once
   // similar to componentDidMount()
-  // letter=${titleAnime}
 
-  // Link for find character
-  // https://api.jikan.moe/v4/characters?letter=hinata&order_by=favorites&sort=desc&limit=10
-  // https://animechan.vercel.app/api/quote
+  const seiyuuFilter = (seiyuu) => {
+    return seiyuu.language == "Japanese";
+  };
 
   useEffect(() => {
-    axios
-      .get(
-        `https://api.jikan.moe/v4/characters?letter=${titleAnime}&order_by=favorites&sort=desc&limit=5`
-      )
-      .then(function (response) {
-        // handle success
-        // console.log(response);
-        console.log(response.data.data);
-        setIsLoaded(true);
-        setItems(response.data.data);
-        setError(null);
+    const timer = setTimeout(() => {
+      axios
+        .get(
+          `https://api.jikan.moe/v4/characters?letter=${titleChara}&order_by=favorites&sort=desc&limit=5`
+        )
+        .then(function (response) {
+          // handle success
+          // console.log(response);
+          // console.log(response.data.data);
+          setIsLoaded(true);
+          setItems(response.data.data);
+          setError(null);
 
-        // Nampung id chara
-        setIdChara(response.data.data[0].mal_id);
-      })
-      .catch(function (error) {
-        // handle error
-        setIsLoaded(true);
-        setError(error);
-        console.log(error);
-      });
-  }, [titleAnime]);
+          // Nampung id chara
+          setIdChara(response.data.data[0].mal_id);
+        })
+        .catch(function (error) {
+          // handle error
+          setIsLoaded(true);
+          setError(error);
+          console.log(error);
+        });
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [titleChara]);
 
   useEffect(() => {
     axios
@@ -54,9 +57,9 @@ const Anime = () => {
       .then(function (response) {
         // handle success
         // console.log(response);
-        console.log(response.data.data);
+        // console.log(response.data.data);
         setIsLoadedSeiyuu(true);
-        setItemsSeiyuu(response.data.data);
+        setItemsSeiyuu(response.data.data.filter(seiyuuFilter));
       })
       .catch(function (error) {
         // handle error
@@ -68,6 +71,7 @@ const Anime = () => {
 
   const handleChange = (event) => {
     setValue(event.target.value);
+    setTitleChara(event.target.value);
   };
 
   const handleSubmit = (event) => {
@@ -127,7 +131,9 @@ const Anime = () => {
             Search
           </button>
         </form>
-        <div>Loading...</div>
+        <div className="text-md font-sans text-blue-300 mt-5 text-center ">
+          Loading...
+        </div>
       </div>
     );
   } else {
@@ -139,30 +145,47 @@ const Anime = () => {
         <form onSubmit={handleSubmit}>
           <input
             type="search"
-            className="form-input px-4 py-3 rounded-full "
+            className="form-input px-4 py-3 rounded-full focus:outline-none focus:ring focus:ring-sky-400"
             placeholder="ex. Kasumi Toyama"
             onChange={handleChange}
             value={value}
           />
           <button
             type="submit"
-            className="mx-2 px-5 py-3 bg-indigo-700 rounded-full text-white hover:bg-indigo-900 text-sm"
+            className="mx-2 px-5 py-3 bg-indigo-700 rounded-full text-white hover:bg-indigo-800  active:bg-indigo-900 focus:outline-none focus:ring focus:ring-indigo-300 text-sm"
           >
             Search
           </button>
         </form>
         <div>
-          <ul className="my-10">
+          <ul className="my-10 flex gap-2">
             {items.map((item) => (
               <li
                 key={item.mal_id}
                 className="bg-sky-600 text-white py-2 px-4 my-2 rounded-xl"
               >
-                <a href={item.url} target="_blank">
+                <a
+                  href={item.url}
+                  target="_blank"
+                  className="block text-center"
+                >
                   {item.name}
+                </a>
+                <a
+                  href={item.url}
+                  target="_blank"
+                  className="flex justify-center"
+                >
+                  <img
+                    src={item.images.jpg.image_url}
+                    alt=""
+                    className="w-28"
+                  />
                 </a>
               </li>
             ))}
+          </ul>
+          <ul className="my-10 flex gap-2">
             {itemsSeiyuu.map((item) => (
               <li
                 key={item.person.name}
@@ -170,6 +193,17 @@ const Anime = () => {
               >
                 <a href={item.person.url} target="_blank">
                   {item.person.name}
+                </a>
+                <a
+                  href={item.person.url}
+                  target="_blank"
+                  className="flex justify-center"
+                >
+                  <img
+                    src={item.person.images.jpg.image_url}
+                    alt="Seiyuu"
+                    className="w-28"
+                  />
                 </a>
               </li>
             ))}
