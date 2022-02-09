@@ -6,7 +6,6 @@ const Anime = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState([]);
 
-  const [value, setValue] = useState("");
   const [titleAnime, setTitleAnime] = useState("");
   const [titleChara, setTitleChara] = useState("");
 
@@ -24,10 +23,11 @@ const Anime = () => {
   };
 
   useEffect(() => {
+    setIsLoaded(false);
     const timer = setTimeout(() => {
       axios
         .get(
-          `https://api.jikan.moe/v4/characters?letter=${titleChara}&order_by=favorites&sort=desc&limit=5`
+          `https://api.jikan.moe/v4/characters?letter=${titleChara}&order_by=favorites&sort=desc&limit=9`
         )
         .then(function (response) {
           // handle success
@@ -36,7 +36,7 @@ const Anime = () => {
           setIsLoaded(true);
           setItems(response.data.data);
           setError(null);
-          console.log(titleChara);
+          // console.log(titleChara);
           // Nampung id chara
           setIdChara(response.data.data[0].mal_id);
         })
@@ -46,7 +46,7 @@ const Anime = () => {
           setError(error);
           console.log(error);
         });
-    }, 400);
+    }, 340);
     return () => clearTimeout(timer);
   }, [titleChara]);
 
@@ -81,21 +81,27 @@ const Anime = () => {
   if (error) {
     return (
       <>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="flex">
           <input
+            id="searching"
             type="search"
-            className="form-input px-4 py-3 rounded-full "
+            className="form-input px-4 py-3 text-sky-400 bg-transparent  border-0 border-b-4 border-sky-800 focus:border-sky-400 focus:outline-0"
             placeholder="e.g. Kasumi Toyama"
             onChange={handleChange}
             value={titleChara}
+            list="character"
           />
-
-          <button
+          <datalist id="character">
+            {items.map((item) => (
+              <option key={item.mal_id}>{item.name}</option>
+            ))}
+          </datalist>
+          {/* <button
             type="submit"
-            className="mx-2 px-5 py-3 bg-indigo-700 rounded-full text-white hover:bg-indigo-900 text-sm"
+            className="mx-2 px-5 py-3 bg-indigo-700 rounded-full text-white hover:bg-indigo-800  active:bg-indigo-900 focus:outline-none focus:ring focus:ring-indigo-300 text-sm"
           >
             Search
-          </button>
+          </button> */}
         </form>
         <div className="text-md font-sans text-blue-300 mt-5 text-center ">
           Error: {titleChara} can't found
@@ -105,20 +111,27 @@ const Anime = () => {
   } else if (!isLoaded) {
     return (
       <>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="flex">
           <input
+            id="searching"
             type="search"
-            className="form-input px-4 py-3 rounded-full "
+            className="form-input px-4 py-3 text-sky-400 bg-transparent border-0 border-b-4 border-sky-800 focus:border-sky-400 focus:outline-0"
             placeholder="e.g. Kasumi Toyama"
             onChange={handleChange}
             value={titleChara}
+            list="character"
           />
-          <button
+          <datalist id="character">
+            {items.map((item) => (
+              <option key={item.mal_id}>{item.name}</option>
+            ))}
+          </datalist>
+          {/* <button
             type="submit"
-            className="mx-2 px-5 py-3 bg-indigo-700 rounded-full text-white hover:bg-indigo-900 text-sm"
+            className="mx-2 px-5 py-3 bg-indigo-700 rounded-full text-white hover:bg-indigo-800  active:bg-indigo-900 focus:outline-none focus:ring focus:ring-indigo-300 text-sm"
           >
             Search
-          </button>
+          </button> */}
         </form>
         <div className="text-md font-sans text-blue-300 mt-5 text-center ">
           Loading...
@@ -128,37 +141,29 @@ const Anime = () => {
   } else {
     return (
       <>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="flex">
           <input
+            id="searching"
             type="search"
-            className="form-input px-4 py-3 rounded-full focus:outline-none focus:ring focus:ring-sky-400"
+            className="form-input px-4 py-3 text-sky-400 bg-transparent border-0 border-b-4 border-sky-800 focus:border-sky-400 focus:outline-0"
             placeholder="e.g. Kasumi Toyama"
             onChange={handleChange}
             value={titleChara}
+            list="character"
           />
-          <button
+          <datalist id="character">
+            {items.map((item) => (
+              <option key={item.mal_id}>{item.name}</option>
+            ))}
+          </datalist>
+          {/* <button
             type="submit"
             className="mx-2 px-5 py-3 bg-indigo-700 rounded-full text-white hover:bg-indigo-800  active:bg-indigo-900 focus:outline-none focus:ring focus:ring-indigo-300 text-sm"
           >
             Search
-          </button>
+          </button> */}
         </form>
         <div>
-          <ul className="my-10 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4 ">
-            {items.map((item) => (
-              <li
-                key={item.mal_id}
-                className="bg-sky-600 text-white py-2 px-4 my-2 rounded-xl flex gap-2"
-              >
-                {/* <div
-                  className="h-20 w-20 rounded-full  bg-center "
-                  style={{ background: `url(${item.images.jpg.image_url})` }}
-                ></div> */}
-                <img src={item.images.jpg.image_url} className="w-10" />
-                <h5 className="flex justify-center">{item.name}</h5>
-              </li>
-            ))}
-          </ul>
           <ul className="my-10 flex flex-col sm:flex-row gap-2">
             {itemsSeiyuu.map((item) => (
               <li
