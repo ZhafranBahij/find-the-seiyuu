@@ -1,41 +1,48 @@
-import { react, useState, useEffect } from "react";
+import { react, useState, useEffect, useContext, createContext } from "react";
+import AnimeList from "./AnimeList";
 
-export default function MyComponent() {
-  const [error, setError] = useState(null);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [items, setItems] = useState([]);
+const Anime = () => {
+  const [result, setResult] = useState("");
+  const [titleAnime, setTitleAnime] = useState("");
+  const [chara, setChara] = useState("");
 
-  // Note: the empty deps array [] means
-  // this useEffect will run once
-  // similar to componentDidMount()
+  const AniContext = createContext(chara);
   useEffect(() => {
-    fetch("https://api.jikan.moe/v4/anime")
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          // setIsLoaded(true);
-          setItems(result);
-          console.log(result);
-        },
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
-        (error) => {
-          // setIsLoaded(true);
-          setError(error);
-        }
-      );
-  }, []);
+    setChara(result);
+    console.log(result);
+  }, result);
 
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  } else {
-    return (
-      <ul>
-        {items.map((item) => (
-          <li key={item.id}>item</li>
-        ))}
-      </ul>
-    );
-  }
-}
+  const handleChange = (event) => {
+    setResult(event.target.value);
+    console.log(result);
+  };
+
+  const handleSubmit = (event) => {
+    setTitleAnime(value);
+    event.preventDefault();
+  };
+  return (
+    <>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="search"
+          className="form-input px-4 py-3 rounded-full "
+          placeholder="e.g. Kasumi Toyama"
+          onChange={handleChange}
+          value={result}
+        />
+        <button
+          type="submit"
+          className="mx-2 px-5 py-3 bg-indigo-700 rounded-full text-white hover:bg-indigo-900 text-sm"
+        >
+          Search
+        </button>
+      </form>
+      <AniContext.Provider value={chara}>
+        <AnimeList />
+      </AniContext.Provider>
+    </>
+  );
+};
+
+export default Anime;
