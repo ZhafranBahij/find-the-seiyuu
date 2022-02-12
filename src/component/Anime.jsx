@@ -104,7 +104,7 @@ const Anime = () => {
           </button> */}
         </form>
         <div className="text-md font-sans text-blue-300 mt-5 text-center ">
-          Error: {titleChara} can't found
+          Error: {error}
         </div>
       </>
     );
