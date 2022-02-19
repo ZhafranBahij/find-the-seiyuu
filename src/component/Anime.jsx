@@ -14,6 +14,10 @@ const Anime = () => {
   const [itemsSeiyuu, setItemsSeiyuu] = useState([]);
   const [isLoadedSeiyuu, setIsLoadedSeiyuu] = useState(false);
 
+  const [errorCharacter, setErrorCharacter] = useState(null);
+  const [itemsCharacter, setItemsCharacter] = useState([]);
+  const [isLoadedCharacter, setIsLoadedCharacter] = useState(false);
+
   // Note: the empty deps array [] means
   // this useEffect will run once
   // similar to componentDidMount()
@@ -22,6 +26,7 @@ const Anime = () => {
     return seiyuu.language == "Japanese";
   };
 
+  // for handle a character in datalist
   useEffect(() => {
     setIsLoaded(false);
     const timer = setTimeout(() => {
@@ -46,10 +51,11 @@ const Anime = () => {
           setError(error);
           console.log(error);
         });
-    }, 340);
+    }, 500);
     return () => clearTimeout(timer);
   }, [titleChara]);
 
+  // To find a seiyuu from that character
   useEffect(() => {
     axios
       .get(`https://api.jikan.moe/v4/characters/${idChara}/voices`)
@@ -64,6 +70,26 @@ const Anime = () => {
         // handle error
         setIsLoadedSeiyuu(true);
         setErrorSeiyuu(error);
+        // console.log(error);
+      });
+  }, [idChara]);
+
+  // To find a Character
+  useEffect(() => {
+    let idChar = idChara == "" ? 417 : idChara;
+    axios
+      .get(`https://api.jikan.moe/v4/characters/${idChar}`)
+      .then(function (response) {
+        // handle success
+        // console.log(response);
+        // console.log(response.data.data);
+        setIsLoadedCharacter(true);
+        setItemsCharacter(response.data.data);
+      })
+      .catch(function (error) {
+        // handle error
+        setIsLoadedCharacter(true);
+        setErrorCharacter(error);
         // console.log(error);
       });
   }, [idChara]);
@@ -104,7 +130,8 @@ const Anime = () => {
           </button> */}
         </form>
         <div className="text-md font-sans text-blue-300 mt-5 text-center ">
-          Error: {error}
+          {/* Error: {error} */}
+          Not Found
         </div>
       </>
     );
@@ -164,6 +191,29 @@ const Anime = () => {
           </button> */}
         </form>
         <div>
+          <ul className="my-10 flex flex-col sm:flex-row gap-2">
+            <li
+              key={itemsCharacter.mal_id}
+              className="bg-sky-600 text-white py-2 px-4 my-2 rounded-xl"
+            >
+              <a href={itemsCharacter.url} target="_blank">
+                {itemsCharacter.name}
+              </a>
+              <a
+                href={itemsCharacter.url}
+                target="_blank"
+                className="flex justify-center"
+              >
+                <img
+                  src={itemsCharacter.images.jpg.image_url}
+                  alt="Character"
+                  className="w-28"
+                />
+              </a>
+            </li>
+
+            {/* <li>{items[0]}</li> */}
+          </ul>
           <ul className="my-10 flex flex-col sm:flex-row gap-2">
             {itemsSeiyuu.map((item) => (
               <li

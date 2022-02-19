@@ -25,6 +25,15 @@ const questions = [
       url: "https://www.yourdictionary.com/seiyuu",
     },
   },
+  {
+    id: 3,
+    title: "Find a bug or have a advice?",
+    description: `You can contact me on twitter or telegram. You could chat me with english language. Thank you`,
+    source: {
+      name: "Contact Me",
+      url: "https://t.me/Zhafran_Bahij",
+    },
+  },
 ];
 
 export default function About() {

@@ -67,6 +67,13 @@ export default function Example() {
                     >
                       Created by
                     </a>
+                    <a
+                      href="https://zhafranbahij.github.io/personal-profile/"
+                      target="_blank"
+                      className="text-sky-300 hover:bg-gray-700 hover:text-sky-300 px-3 py-2 rounded-md text-sm font-medium"
+                    >
+                      Created by
+                    </a>
                   </div>
                 </div>
               </div>
