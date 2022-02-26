@@ -32,7 +32,7 @@ const Anime = () => {
     const timer = setTimeout(() => {
       axios
         .get(
-          `https://api.jikan.moe/v4/characters?letter=${titleChara}&order_by=favorites&sort=desc&limit=9`
+          `https://api.jikan.moe/v4/characters?letter=${titleChara}&order_by=favorites&sort=desc&limit=5`
         )
         .then(function (response) {
           // handle success
@@ -51,7 +51,7 @@ const Anime = () => {
           setError(error);
           console.log(error);
         });
-    }, 500);
+    }, 666);
     return () => clearTimeout(timer);
   }, [titleChara]);
 
@@ -178,7 +178,7 @@ const Anime = () => {
             value={titleChara}
             list="character"
           />
-          <datalist id="character">
+          <datalist id="character" className="overflow-y-auto max-h-8">
             {items.map((item) => (
               <option key={item.mal_id}>{item.name}</option>
             ))}

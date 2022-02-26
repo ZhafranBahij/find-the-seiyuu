@@ -34,6 +34,15 @@ const questions = [
       url: "https://t.me/Zhafran_Bahij",
     },
   },
+  {
+    id: 4,
+    title: "What if the app has an errors?",
+    description: `Just refresh it, i hope i can repaired it T_T`,
+    source: {
+      name: "Rainfog",
+      url: "https://t.me/Zhafran_Bahij",
+    },
+  },
 ];
 
 export default function About() {

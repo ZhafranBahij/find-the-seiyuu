@@ -5,6 +5,7 @@ import {
   HomeIcon,
   QuestionMarkCircleIcon,
   UserGroupIcon,
+  UserIcon,
 } from "@heroicons/react/outline";
 import profile from "../img/Shizuku.jpg";
 import { Link } from "react-router-dom";
@@ -21,6 +22,12 @@ const navigation = [
     act: "/about",
     current: false,
     icon: <QuestionMarkCircleIcon className="text-sky-300 h-7 w-7" />,
+  },
+  {
+    name: "Contact Me",
+    act: "/contact",
+    current: false,
+    icon: <UserIcon className="text-sky-300 h-7 w-7" />,
   },
 ];
 
@@ -60,20 +67,13 @@ export default function Example() {
                         {item.name}
                       </Link>
                     ))}
-                    <a
+                    {/* <a
                       href="https://zhafranbahij.github.io/personal-profile/"
                       target="_blank"
                       className="text-sky-300 hover:bg-gray-700 hover:text-sky-300 px-3 py-2 rounded-md text-sm font-medium"
                     >
                       Created by
-                    </a>
-                    <a
-                      href="https://zhafranbahij.github.io/personal-profile/"
-                      target="_blank"
-                      className="text-sky-300 hover:bg-gray-700 hover:text-sky-300 px-3 py-2 rounded-md text-sm font-medium"
-                    >
-                      Created by
-                    </a>
+                    </a> */}
                   </div>
                 </div>
               </div>
@@ -100,7 +100,7 @@ export default function Example() {
                   </div>
                 </Link>
               ))}
-              <a
+              {/* <a
                 href="https://zhafranbahij.github.io/personal-profile/"
                 target="_blank"
                 className="text-sky-300 hover:bg-gray-700 hover:text-sky-300 px-3 py-2 rounded-md text-sm font-medium flex flex-col
@@ -112,7 +112,7 @@ export default function Example() {
                 <div className="flex justify-center text-xs opacity-30">
                   Created by
                 </div>
-              </a>
+              </a> */}
             </div>
           </nav>
         </>
